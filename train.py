@@ -19,7 +19,7 @@ from optimizer import AdamWithWeightsNormalization
 from utils import DataLoader
 
 class SuperResolution(object):
-    
+
     def __init__(self, scale=4, num_res_blocks=32, pretrained_weights=None, name=None):
         self.scale = scale
         self.num_res_blocks = num_res_blocks
@@ -31,7 +31,7 @@ class SuperResolution(object):
             print("[OK] weights loaded.")
             pass
         self.data_loader = DataLoader(scale=scale, crop_size=256)
-        self.pretrained_weights = pretrained_weights
+        # self.pretrained_weights = pretrained_weights
         self.default_weights_save_path = 'weights/wdsr-b-' + \
         str(self.num_res_blocks) + '-x' + str(self.scale) + '.h5'
         self.name = name
@@ -50,7 +50,7 @@ class SuperResolution(object):
         hr = K.in_train_phase(hr_crop, hr)
         hr.uses_learning_phase = True
         return tf.image.psnr(hr, sr, max_val=255)
-    
+
     def train(self, epoches=10000, batch_size=8, weights_save_path=None):
         if weights_save_path == None:
             weights_save_path = self.default_weights_save_path
@@ -68,7 +68,7 @@ class SuperResolution(object):
             print("[OK] weights saved.")
             pass
         pass
-    
+
     def sample(self, setpath='datasets/train', save_folder='samples', epoch=1, batch=1):
         images = self.data_loader.search(setpath)
         image = random.choice(images)
@@ -85,7 +85,7 @@ class SuperResolution(object):
         sr.save(save_folder + "/" + "epoch_" + str(epoch) + "_batch_" + str(batch) + "_sr.jpg")
         hr.save(save_folder + "/" + "epoch_" + str(epoch) + "_batch_" + str(batch) + "_hr.jpg")
         pass
-    
+
     pass
 
 
